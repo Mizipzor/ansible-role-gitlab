@@ -104,7 +104,7 @@ gitlab_rails['object_store']['enabled'] = {{ gitlab_object_store }}
 gitlab_rails['object_store']['proxy_download'] = true
 gitlab_rails['object_store']['connection'] = {
   'provider' => 'AzureRM',
-  'azure_storage_account_name' => '{{ gitlab_storage_account }}'
+  'azure_storage_account_name' => '{{ gitlab_storage_account }}',
   'azure_storage_access_key' => '{{ gitlab_storage_key }}'
 }
 gitlab_rails['object_store']['objects']['terraform_state']['bucket'] = '{{ gitlab_terraform_state_container }}'
