@@ -98,6 +98,18 @@ registry_nginx['ssl_certificate'] = "{{ gitlab_registry_nginx_ssl_certificate }}
 registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_nginx_ssl_certificate_key }}"
 {% endif %}
 
+# GitLab object stored
+gitlab_rails['object_store']['enabled'] = {{ gitlab_object_store }}
+{% if gitlab_object_store == "true" %}
+gitlab_rails['object_store']['proxy_download'] = true
+gitlab_rails['object_store']['connection'] = {
+  'provider' => 'AzureRM',
+  'azure_storage_account_name' => '{{ gitlab_storage_account }}'
+  'azure_storage_access_key' => '{{ gitlab_storage_key }}'
+}
+gitlab_rails['object_store']['objects']['terraform_state']['bucket'] = '{{ gitlab_terraform_state_container }}'
+gitlab_rails['object_store']['objects']['pages']['bucket'] = '{{ gitlab_pages_container }}'
+
 {% if gitlab_extra_settings is defined %}
 # Extra configuration
 {% for extra in gitlab_extra_settings %}
