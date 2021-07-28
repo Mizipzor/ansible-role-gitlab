@@ -109,6 +109,7 @@ gitlab_rails['object_store']['connection'] = {
 }
 gitlab_rails['object_store']['objects']['terraform_state']['bucket'] = '{{ gitlab_terraform_state_container }}'
 gitlab_rails['object_store']['objects']['pages']['bucket'] = '{{ gitlab_pages_container }}'
+{% endif %}
 
 {% if gitlab_extra_settings is defined %}
 # Extra configuration
