@@ -1,5 +1,6 @@
 # The URL through which GitLab will be accessed.
 external_url "{{ gitlab_external_url }}"
+pages_external_url "{{ pages_external_url }}"
 
 # Gitlab pages
 {% if pages_external_url is defined %}
@@ -101,6 +102,65 @@ registry['enable'] = {{ gitlab_registry_enable }}
 registry_external_url "{{ gitlab_registry_external_url }}"
 registry_nginx['ssl_certificate'] = "{{ gitlab_registry_nginx_ssl_certificate }}"
 registry_nginx['ssl_certificate_key'] = "{{ gitlab_registry_nginx_ssl_certificate_key }}"
+{% endif %}
+
+# GitLab object store
+{% if gitlab_object_store == "true" %}
+gitlab_rails['object_store']['enabled'] = true
+gitlab_rails['object_store']['proxy_download'] = true
+gitlab_rails['object_store']['connection'] = {
+  'provider' => 'AzureRM',
+  'azure_storage_account_name' => '{{ gitlab_storage_account }}',
+  'azure_storage_access_key' => '{{ gitlab_storage_key }}',
+}
+{% if gitlab_object_store_artifacts_bucket is defined %}
+gitlab_rails['object_store']['objects']['artifacts']['enabled'] = true
+gitlab_rails['object_store']['objects']['artifacts']['bucket'] = '{{ gitlab_object_store_artifacts_bucket }}'
+{% else %}
+gitlab_rails['object_store']['objects']['artifacts']['enabled'] = false
+{% endif %}
+{% if gitlab_object_store_external_diffs_bucket is defined %}
+gitlab_rails['object_store']['objects']['external_diffs']['enabled'] = true
+gitlab_rails['object_store']['objects']['external_diffs']['bucket'] = '{{ gitlab_object_store_external_diffs_bucket }}
+{% else %}
+gitlab_rails['object_store']['objects']['external_diffs']['enabled'] = false
+{% endif %}
+{% if gitlab_object_store_lfs_bucket is defined %}
+gitlab_rails['object_store']['objects']['lfs']['enabled'] = true
+gitlab_rails['object_store']['objects']['lfs']['bucket'] = '{{ gitlab_object_store_lfs_bucket }}'
+{% else %}
+gitlab_rails['object_store']['objects']['lfs']['enabled'] = false
+{% endif %}
+{% if gitlab_object_store_uploads_bucket is defined %}
+gitlab_rails['object_store']['objects']['uploads']['enabled'] = true
+gitlab_rails['object_store']['objects']['uploads']['bucket'] = '{{ gitlab_object_store_uploads_bucket }}'
+{% else %}
+gitlab_rails['object_store']['objects']['uploads']['enabled'] = false
+{% endif %}
+{% if gitlab_object_store_packages_bucket is defined %}
+gitlab_rails['object_store']['objects']['packages']['enabled'] = true
+gitlab_rails['object_store']['objects']['packages']['bucket'] = '{{ gitlab_object_store_packages_bucket }}'
+{% else %}
+gitlab_rails['object_store']['objects']['packages']['enabled'] = false
+{% endif %}
+{% if gitlab_object_store_dependency_proxy_bucket is defined %}
+gitlab_rails['object_store']['objects']['dependency_proxy']['enabled'] = true
+gitlab_rails['object_store']['objects']['dependency_proxy']['bucket'] = '{{ gitlab_object_store_dependency_proxy_bucket }}'
+{% else %}
+gitlab_rails['object_store']['objects']['dependency_proxy']['enabled'] = false
+{% endif %}
+{% if gitlab_object_store_terraform_state_bucket is defined %}
+gitlab_rails['object_store']['objects']['terraform_state']['enabled'] = true
+gitlab_rails['object_store']['objects']['terraform_state']['bucket'] = '{{ gitlab_object_store_terraform_state_bucket }}'
+{% else %}
+gitlab_rails['object_store']['objects']['terraform_state']['enabled'] = false
+{% endif %}
+{% if gitlab_object_store_pages_bucket is defined %}
+gitlab_rails['object_store']['objects']['pages']['enabled'] = true
+gitlab_rails['object_store']['objects']['pages']['bucket'] = '{{ gitlab_object_store_pages_bucket }}'
+{% else %}
+gitlab_rails['object_store']['objects']['pages']['enabled'] = false
+{% endif %}
 {% endif %}
 
 {% if gitlab_extra_settings is defined %}
