@@ -3,7 +3,7 @@ external_url "{{ gitlab_external_url }}"
 pages_external_url "{{ pages_external_url }}"
 
 # Gitlab pages
-{% if pages_host is true %}
+{% if pages_host == "true" %}
 roles ['pages_role']
 {% endif %}
 
