@@ -3,9 +3,8 @@ external_url "{{ gitlab_external_url }}"
 pages_external_url "{{ pages_external_url }}"
 
 # Gitlab pages
-{% if pages_external_url is defined %}
+{% if pages_host == "true" %}
 roles ['pages_role']
-pages_external_url "{{ pages_external_url }}"
 {% endif %}
 
 # gitlab.yml configuration
